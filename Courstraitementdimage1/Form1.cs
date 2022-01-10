@@ -24,7 +24,7 @@ namespace Courstraitementdimage1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            imagesrc = new Bitmap(@"C:\HEI4IMS\lena.jpg");
+            imagesrc = new Bitmap(@"C:\Users\polle\Downloads\lena.jpg");
             pbSource.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pbSource.Image = imagesrc;
@@ -112,7 +112,7 @@ namespace Courstraitementdimage1
                 greyCount[i] = 0;
             }
             greyCount = Histogramme(imageDestination, greyCount);
-            DrawHistogram(greyCount,0, greyCount.Length);
+            DrawHistogram(greyCount);
 
         }
         private int[] Histogramme(Bitmap bitmap, int[] greyCount)
@@ -138,14 +138,14 @@ namespace Courstraitementdimage1
 
             return greyCount;
         }
-        public void DrawHistogram(int[] greyCount, int seuilBas, int seuilHaut)
+        public void DrawHistogram(int[] greyCount)
         {
             
             // int x1 y1;
             int y1, y2;            
             using (Graphics g = pictureBox2.CreateGraphics())
             {
-                for (int i = seuilBas; i < seuilHaut; i++)
+                for (int i = 0; i < greyCount.Length; i++)
                 {
                     
                     y1 = 255;
@@ -176,20 +176,25 @@ namespace Courstraitementdimage1
                     seuilHaut = i;
                 }
             }
+
             
-            
-            Bitmap imageDestinationRecadre = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
+            Bitmap imageDestinationRecadre = new Bitmap(pbSource.Image.Width,pbSource.Image.Height);
             for (int x = 0; x < pbSource.Image.Width; x++)
             {
                 for (int y = 0; y < pbSource.Image.Height; y++)
                 {
                     Color pix = imageDestination.GetPixel(x, y);
                     int p = pix.R;
-                    p = (p-seuilBas) / 256;
-                    imageDestinationRecadre.SetPixel(x, y, Color.FromArgb(p, p, p));
+                    if(p>=seuilBas && p<= seuilHaut)
+                    {
+                        imageDestinationRecadre.SetPixel(x, y, Color.FromArgb(p, p, p));
+                    }
+                    
                 }
             }
             pictureBox3.Image = imageDestinationRecadre;
+
+            // on construit un nouvel histogramme
         }
     }
 }
