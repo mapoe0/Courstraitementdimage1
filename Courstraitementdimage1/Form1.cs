@@ -24,7 +24,7 @@ namespace Courstraitementdimage1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            imagesrc = new Bitmap(@"C:\Users\polle\Downloads\lena.jpg");
+            imagesrc = new Bitmap(@"C:\HEI4IMS\lena.jpg");
             pbSource.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pbSource.Image = imagesrc;
@@ -142,7 +142,9 @@ namespace Courstraitementdimage1
         {
             
             // int x1 y1;
-            int y1, y2;            
+            int y1, y2;
+            pictureBox2.Image = null;
+            pictureBox2.Update();
             using (Graphics g = pictureBox2.CreateGraphics())
             {
                 for (int i = 0; i < greyCount.Length; i++)
@@ -184,18 +186,47 @@ namespace Courstraitementdimage1
                 for (int y = 0; y < pbSource.Image.Height; y++)
                 {
                     Color pix = imageDestination.GetPixel(x, y);
-                    int p = pix.R;
-                    if(p>=seuilBas && p<= seuilHaut)
-                    {
-                        imageDestinationRecadre.SetPixel(x, y, Color.FromArgb(p, p, p));
-                    }
-                    
+                    byte red;
+                    red = pix.R;
+                    red = (byte)(255 * (red - seuilBas) / (seuilHaut - seuilBas));
+
+                    Color newpix = Color.FromArgb(255, red, red, red);
+                    imageDestinationRecadre.SetPixel(x, y, newpix);
                 }
             }
             pictureBox3.Image = imageDestinationRecadre;
+            for(int i = 0; i < 256; i++)
+            {
+                greyCount[i] = 0;
+            }
+            greyCount = Histogramme(imageDestinationRecadre, greyCount);
+            DrawHistogram(greyCount);
 
             // on construit un nouvel histogramme
         }
+        private void filtre()
+        {
+            int gris;
+            for(int x=1; x<(pbSource.Image.Width - 2); x++)
+            {
+                for(int y = 1; y < pbSource.Image.Height - 2; y++)
+                {
+                    gris = 0;
+                    for(int k = -1; k < 1; k++)
+                    {
+                        for(int n = -1; n < 1; n++)
+                        {
+                            gris += imageDestination.GetPixel(x+k, y+n).R * masque(k + 1, n + 1); // je ne comprends pas 
+                        }
+                    }
+                }
+            }
+        }
+        private int masque(int k,int n)
+        {
+            return 0;
+        }
+
     }
 }
 
