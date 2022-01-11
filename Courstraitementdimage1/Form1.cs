@@ -24,7 +24,7 @@ namespace Courstraitementdimage1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            imagesrc = new Bitmap(@"C:\HEI4IMS\lena.jpg");
+            imagesrc = new Bitmap(@"C:\HEI4IMS\image14.jpg");
             pbSource.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pbSource.Image = imagesrc;
@@ -204,31 +204,97 @@ namespace Courstraitementdimage1
 
             // on construit un nouvel histogramme
         }
-        private void filtre()
+
+        private void filtreBtn_Click(object sender, EventArgs e)
         {
-            int gris;
-            for(int x=1; x<(pbSource.Image.Width - 2); x++)
+            Bitmap bit = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
+            
+            for (int x = 1; x < (pbSource.Image.Width - 1); x++)
             {
-                for(int y = 1; y < pbSource.Image.Height - 2; y++)
+                for (int y = 1; y < (pbSource.Image.Height - 1); y++)
                 {
-                    gris = 0;
-                    for(int k = -1; k < 1; k++)
+                    int gris = 0;
+                    for (int k = -1; k <2; k++)
                     {
-                        for(int n = -1; n < 1; n++)
+                        for (int n = -1; n <2; n++)
                         {
-                            gris += imageDestination.GetPixel(x+k, y+n).R * masque(k + 1, n + 1); // je ne comprends pas 
+                            Color pix = imageDestination.GetPixel(x+k, y+n);                                                    
+                            gris += pix.R;
                         }
                     }
+                    gris = gris/9;
+                    Color newColor = Color.FromArgb(gris, gris, gris);
+                    bit.SetPixel(x, y, newColor);
                 }
+
             }
+            pictureBox4.Image = bit;
         }
-        private int masque(int k,int n)
+
+        private void passebasBtn_Click(object sender, EventArgs e)
         {
-            return 0;
+            Bitmap bit = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
+
+            for (int x = 1; x < (pbSource.Image.Width - 1); x++)
+            {
+                for (int y = 1; y < (pbSource.Image.Height - 1); y++)
+                {
+                    int gris = 0;
+                    for (int k = -1; k < 2; k++)
+                    {
+                        for (int n = -1; n < 2; n++)
+                        {
+                            Color pix = imageDestination.GetPixel(x + k, y + n);
+                            int r = pix.R;
+                            if (k == 1 && n == 1)
+                            {
+                                r = r * 4;
+                            }
+
+                            gris += r;
+                        }
+                    }
+                    gris = gris / 12;
+                    Color newColor = Color.FromArgb(gris, gris, gris);
+                    bit.SetPixel(x, y, newColor);
+                }
+
+            }
+            pictureBox4.Image = bit;
+        }
+
+        private void passehautBtn_Click(object sender, EventArgs e)
+        {
+            Bitmap bit = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
+            int[,] mat = new int[3, 3] { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };
+
+            for (int x = 1; x < (pbSource.Image.Width - 1); x++)
+            {
+                for (int y = 1; y < (pbSource.Image.Height - 1); y++)
+                {
+                    int gris = 0;
+                    for (int k = 0; k < 3; k++)
+                    {
+                        for (int n = 0; n < 3; n++)
+                        {
+                            Color pix = imageDestination.GetPixel(x, y); ;
+                            int r = pix.R;
+                            r = r * mat[k,n];
+                            
+                        }
+                    }
+                    gris = gris / ;
+                    Color newColor = Color.FromArgb(gris, gris, gris);
+                    bit.SetPixel(x, y, newColor);
+                }
+
+            }
+            pictureBox4.Image = bit;
         }
 
     }
 }
+
 
 
 
