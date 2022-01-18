@@ -42,7 +42,7 @@ namespace Courstraitementdimage1
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.errosionBtn = new System.Windows.Forms.Button();
+            this.listBox2 = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -182,22 +182,24 @@ namespace Courstraitementdimage1
             this.listBox1.TabIndex = 17;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
-            // errosionBtn
+            // listBox2
             // 
-            this.errosionBtn.Location = new System.Drawing.Point(856, 435);
-            this.errosionBtn.Name = "errosionBtn";
-            this.errosionBtn.Size = new System.Drawing.Size(256, 23);
-            this.errosionBtn.TabIndex = 18;
-            this.errosionBtn.Text = "Erosion";
-            this.errosionBtn.UseVisualStyleBackColor = true;
-            this.errosionBtn.Click += new System.EventHandler(this.errosionBtn_Click);
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.Items.AddRange(new object[] {
+            "Erosion",
+            "Dilatation"});
+            this.listBox2.Location = new System.Drawing.Point(908, 432);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(109, 30);
+            this.listBox2.TabIndex = 19;
+            this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1443, 782);
-            this.Controls.Add(this.errosionBtn);
+            this.Controls.Add(this.listBox2);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.pictureBox4);
             this.Controls.Add(this.pictureBox3);
@@ -240,7 +242,7 @@ namespace Courstraitementdimage1
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button errosionBtn;
+        private System.Windows.Forms.ListBox listBox2;
     }
 }
 

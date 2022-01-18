@@ -24,7 +24,7 @@ namespace Courstraitementdimage1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            imagesrc = new Bitmap(@"C:\HEI4IMS\image48.jpg");
+            imagesrc = new Bitmap(@"C:\HEI4IMS\CLASSE1.jpg");
             pbSource.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pbSource.Image = imagesrc;
@@ -227,35 +227,7 @@ namespace Courstraitementdimage1
                     break;
             }
         }
-        private void Erosion()
-        {
-            Bitmap bit = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
-            int fond = 0;
-
-            for (int x = 1; x < (pbSource.Image.Width - 1); x++)
-            {
-                for (int y = 1; y < (pbSource.Image.Height - 1); y++)
-                {
-                    int gris = imageDestination2.GetPixel(x, y).R ;
-
-                    for (int k = -1; k < 2; k++)
-                    {
-                        for (int n = -1; n < 2; n++)
-                        {
-                            int pix = imageDestination2.GetPixel(x+k, y+n).R;
-                            if (pix == fond)
-                            {
-                                gris = (gris + fond) / 2;
-                            }
-                        }
-                    }
-                    Color newColor = Color.FromArgb(gris, gris, gris);
-                    bit.SetPixel(x, y, newColor);
-                }
-
-            }
-            pictureBox4.Image = bit;
-        }
+        
         private void filtreGradient()
         {
             Bitmap bit = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
@@ -415,9 +387,99 @@ namespace Courstraitementdimage1
             pictureBox4.Image = bit;
         }
 
-        private void errosionBtn_Click(object sender, EventArgs e)
+        private void Erosion()
         {
-            Erosion();
+            Bitmap bit = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
+            int fond = 0;
+
+            for (int x = 1; x < (pbSource.Image.Width - 1); x++)
+            {
+                for (int y = 1; y < (pbSource.Image.Height - 1); y++)
+                {
+                    int gris = imageDestination2.GetPixel(x, y).R;
+                    bool test = false;
+                    for (int k = -1; k < 2; k++)
+                    {
+                        if (!test)
+                        {
+                            for (int n = -1; n < 2; n++)
+                            {
+                                int pix = imageDestination2.GetPixel(x + k, y + n).R;
+                                if (pix == fond)
+                                {
+                                    gris = 0;
+                                    test = true;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    Color newColor = Color.FromArgb(gris, gris, gris);
+                    bit.SetPixel(x, y, newColor);
+                }
+
+            }
+            pictureBox4.Image = bit;
+        }
+        private void Dilatation()
+        {   
+            Bitmap bit = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
+            Bitmap pb = imageDestination2;
+            if(pictureBox4.Image != null)
+            {
+                pb = new Bitmap(pictureBox4.Image);
+            }
+            int fond = 255;
+
+            for (int x = 1; x < (pbSource.Image.Width - 1); x++)
+            {
+                for (int y = 1; y < (pbSource.Image.Height - 1); y++)
+                {
+                    int gris = pb.GetPixel(x, y).R;
+                    bool test = false;
+                    for (int k = -1; k < 2; k++)
+                    {
+                        if (!test)
+                        {
+                            for (int n = -1; n < 2; n++)
+                            {
+                                int pix = pb.GetPixel(x + k, y + n).R;
+                                if (pix == fond)
+                                {
+                                    gris = 255;
+                                    test = true;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    Color newColor = Color.FromArgb(gris, gris, gris);
+                    bit.SetPixel(x, y, newColor);
+                }
+
+            }
+            pictureBox4.Image = bit;
+        }
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = listBox2.SelectedIndex;
+            switch (index)
+            {
+                case 0:
+                    Erosion();
+                    break;
+                case 1:
+                    Dilatation();
+                    break;
+            }
         }
     }
 }
