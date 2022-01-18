@@ -24,7 +24,7 @@ namespace Courstraitementdimage1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            imagesrc = new Bitmap(@"C:\HEI4IMS\image14.jpg");
+            imagesrc = new Bitmap(@"C:\HEI4IMS\image48.jpg");
             pbSource.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pbSource.Image = imagesrc;
@@ -205,24 +205,50 @@ namespace Courstraitementdimage1
             // on construit un nouvel histogramme
         }
 
-        private void filtreBtn_Click(object sender, EventArgs e)
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int filtre = listBox1.SelectedIndex;
+            switch (filtre)
+            {
+                case 0:
+                    filtreMoyenneur();
+                    break;
+                case 1:
+                    filtrepassbas();
+                    break;
+                case 2:
+                    filtrepasseHaut();
+                    break;
+                case 3:
+                    filtreLaplacien();
+                    break;
+                case 4:
+                    filtreGradient();
+                    break;
+            }
+        }
+        private void Erosion()
         {
             Bitmap bit = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
-            
+            int fond = 0;
+
             for (int x = 1; x < (pbSource.Image.Width - 1); x++)
             {
                 for (int y = 1; y < (pbSource.Image.Height - 1); y++)
                 {
-                    int gris = 0;
-                    for (int k = -1; k <2; k++)
+                    int gris = imageDestination2.GetPixel(x, y).R ;
+
+                    for (int k = -1; k < 2; k++)
                     {
-                        for (int n = -1; n <2; n++)
+                        for (int n = -1; n < 2; n++)
                         {
-                            Color pix = imageDestination.GetPixel(x+k, y+n);                                                    
-                            gris += pix.R;
+                            int pix = imageDestination2.GetPixel(x+k, y+n).R;
+                            if (pix == fond)
+                            {
+                                gris = (gris + fond) / 2;
+                            }
                         }
                     }
-                    gris = gris/9;
                     Color newColor = Color.FromArgb(gris, gris, gris);
                     bit.SetPixel(x, y, newColor);
                 }
@@ -230,8 +256,140 @@ namespace Courstraitementdimage1
             }
             pictureBox4.Image = bit;
         }
+        private void filtreGradient()
+        {
+            Bitmap bit = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
+            int[,] mat = new int[3, 3] { { -1, -1, -1 }, { 1, 1, 1 }, { 0, 0, 0 } };
 
-        private void passebasBtn_Click(object sender, EventArgs e)
+            for (int x = 1; x < (pbSource.Image.Width - 1); x++)
+            {
+                for (int y = 1; y < (pbSource.Image.Height - 1); y++)
+                {
+                    int gris = 0;
+                    for (int k = -1; k < 2; k++)
+                    {
+                        for (int n = -1; n < 2; n++)
+                        {
+                            Color pix = imageDestination.GetPixel(x + k, y + n);
+                            int r = pix.R;
+                            r = r * mat[k + 1, n + 1];
+                            gris += r;
+                        }
+                    }
+                    if (gris < 0)
+                    {
+                        gris = 0;
+                    }
+                    else if (gris > 255)
+                    {
+                        gris = 255;
+                    }
+                    Color newColor = Color.FromArgb(gris, gris, gris);
+                    bit.SetPixel(x, y, newColor);
+                }
+
+            }
+            pictureBox4.Image = bit;
+        }
+        private void filtreLaplacien()
+        {
+            Bitmap bit = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
+            int[,] mat = new int[3, 3] { { -1, -1, -1 }, { -1, 8, -1 }, { -1, -1, -1 } };
+
+            for (int x = 1; x < (pbSource.Image.Width - 1); x++)
+            {
+                for (int y = 1; y < (pbSource.Image.Height - 1); y++)
+                {
+                    int gris = 0;
+                    for (int k = -1; k < 2; k++)
+                    {
+                        for (int n = -1; n < 2; n++)
+                        {
+                            Color pix = imageDestination.GetPixel(x + k, y + n);
+                            int r = pix.R;
+                            r = r * mat[k + 1, n + 1];
+                            gris += r;
+                        }
+                    }
+                    if (gris < 0)
+                    {
+                        gris = 0;
+                    }
+                    else if (gris > 255)
+                    {
+                        gris = 255;
+                    }
+                    Color newColor = Color.FromArgb(gris, gris, gris);
+                    bit.SetPixel(x, y, newColor);
+                }
+
+            }
+            pictureBox4.Image = bit;
+        }
+        private void filtrepasseHaut()
+        {
+            Bitmap bit = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
+            int[,] mat = new int[3, 3] { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };
+
+            for (int x = 1; x < (pbSource.Image.Width - 1); x++)
+            {
+                for (int y = 1; y < (pbSource.Image.Height - 1); y++)
+                {
+                    int gris = 0;
+                    for (int k = -1; k < 2; k++)
+                    {
+                        for (int n = -1; n < 2; n++)
+                        {
+                            Color pix = imageDestination.GetPixel(x + k, y + n);
+                            int r = pix.R;
+                            r = r * mat[k + 1, n + 1];
+                            gris += r;
+                        }
+                    }
+                    if (gris < 0)
+                    {
+                        gris = 0;
+                    }
+                    else if (gris > 255)
+                    {
+                        gris = 255;
+                    }
+                    Color newColor = Color.FromArgb(gris, gris, gris);
+                    bit.SetPixel(x, y, newColor);
+                }
+
+            }
+            pictureBox4.Image = bit;
+        }
+        private void filtrepassbas()
+        {
+            Bitmap bit = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
+            int[,] mat = new int[3, 3] { { 1, 1, 1 }, { 1, 4, 1 }, { 1, 1, 1 } };
+            for (int x = 1; x < (pbSource.Image.Width - 1); x++)
+            {
+                for (int y = 1; y < (pbSource.Image.Height - 1); y++)
+                {
+                    int gris = 0;
+                    for (int k = -1; k < 2; k++)
+                    {
+                        for (int n = -1; n < 2; n++)
+                        {
+                            Color pix = imageDestination.GetPixel(x + k, y + n);
+                            int r = pix.R;
+                            r = r * mat[k + 1, n + 1];
+
+                            gris += r;
+                        }
+                    }
+                    gris = gris / 12;
+                    Color newColor = Color.FromArgb(gris, gris, gris);
+                    bit.SetPixel(x, y, newColor);
+                }
+
+            }
+            pictureBox4.Image = bit;
+        }
+        private void filtreMoyenneur()
         {
             Bitmap bit = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
 
@@ -245,16 +403,10 @@ namespace Courstraitementdimage1
                         for (int n = -1; n < 2; n++)
                         {
                             Color pix = imageDestination.GetPixel(x + k, y + n);
-                            int r = pix.R;
-                            if (k == 1 && n == 1)
-                            {
-                                r = r * 4;
-                            }
-
-                            gris += r;
+                            gris += pix.R;
                         }
                     }
-                    gris = gris / 12;
+                    gris = gris / 9;
                     Color newColor = Color.FromArgb(gris, gris, gris);
                     bit.SetPixel(x, y, newColor);
                 }
@@ -263,35 +415,10 @@ namespace Courstraitementdimage1
             pictureBox4.Image = bit;
         }
 
-        private void passehautBtn_Click(object sender, EventArgs e)
+        private void errosionBtn_Click(object sender, EventArgs e)
         {
-            Bitmap bit = new Bitmap(pbSource.Image.Width, pbSource.Image.Height);
-            int[,] mat = new int[3, 3] { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };
-
-            for (int x = 1; x < (pbSource.Image.Width - 1); x++)
-            {
-                for (int y = 1; y < (pbSource.Image.Height - 1); y++)
-                {
-                    int gris = 0;
-                    for (int k = 0; k < 3; k++)
-                    {
-                        for (int n = 0; n < 3; n++)
-                        {
-                            Color pix = imageDestination.GetPixel(x, y); ;
-                            int r = pix.R;
-                            r = r * mat[k,n];
-                            
-                        }
-                    }
-                    gris = gris / ;
-                    Color newColor = Color.FromArgb(gris, gris, gris);
-                    bit.SetPixel(x, y, newColor);
-                }
-
-            }
-            pictureBox4.Image = bit;
+            Erosion();
         }
-
     }
 }
 

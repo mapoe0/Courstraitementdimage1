@@ -41,9 +41,8 @@ namespace Courstraitementdimage1
             this.recadrage = new System.Windows.Forms.Button();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.filtreBtn = new System.Windows.Forms.Button();
-            this.passebasBtn = new System.Windows.Forms.Button();
-            this.passehautBtn = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.errosionBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -168,44 +167,38 @@ namespace Courstraitementdimage1
             this.pictureBox4.TabIndex = 11;
             this.pictureBox4.TabStop = false;
             // 
-            // filtreBtn
+            // listBox1
             // 
-            this.filtreBtn.Location = new System.Drawing.Point(1175, 365);
-            this.filtreBtn.Name = "filtreBtn";
-            this.filtreBtn.Size = new System.Drawing.Size(256, 23);
-            this.filtreBtn.TabIndex = 12;
-            this.filtreBtn.Text = "filtreMoyenneur";
-            this.filtreBtn.UseVisualStyleBackColor = true;
-            this.filtreBtn.Click += new System.EventHandler(this.filtreBtn_Click);
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Items.AddRange(new object[] {
+            "filtre moyenneur",
+            "filtre passe bas",
+            "filtre passe haut",
+            "filtre laplacien",
+            "filtre gradient"});
+            this.listBox1.Location = new System.Drawing.Point(1259, 377);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(120, 69);
+            this.listBox1.TabIndex = 17;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
-            // passebasBtn
+            // errosionBtn
             // 
-            this.passebasBtn.Location = new System.Drawing.Point(1175, 406);
-            this.passebasBtn.Name = "passebasBtn";
-            this.passebasBtn.Size = new System.Drawing.Size(256, 23);
-            this.passebasBtn.TabIndex = 13;
-            this.passebasBtn.Text = "filtre passe bas";
-            this.passebasBtn.UseVisualStyleBackColor = true;
-            this.passebasBtn.Click += new System.EventHandler(this.passebasBtn_Click);
-            // 
-            // passehautBtn
-            // 
-            this.passehautBtn.Location = new System.Drawing.Point(1175, 446);
-            this.passehautBtn.Name = "passehautBtn";
-            this.passehautBtn.Size = new System.Drawing.Size(256, 23);
-            this.passehautBtn.TabIndex = 14;
-            this.passehautBtn.Text = "filtre passe haut";
-            this.passehautBtn.UseVisualStyleBackColor = true;
-            this.passehautBtn.Click += new System.EventHandler(this.passehautBtn_Click);
+            this.errosionBtn.Location = new System.Drawing.Point(856, 435);
+            this.errosionBtn.Name = "errosionBtn";
+            this.errosionBtn.Size = new System.Drawing.Size(256, 23);
+            this.errosionBtn.TabIndex = 18;
+            this.errosionBtn.Text = "Erosion";
+            this.errosionBtn.UseVisualStyleBackColor = true;
+            this.errosionBtn.Click += new System.EventHandler(this.errosionBtn_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1443, 782);
-            this.Controls.Add(this.passehautBtn);
-            this.Controls.Add(this.passebasBtn);
-            this.Controls.Add(this.filtreBtn);
+            this.Controls.Add(this.errosionBtn);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.pictureBox4);
             this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.recadrage);
@@ -246,9 +239,8 @@ namespace Courstraitementdimage1
         private System.Windows.Forms.Button recadrage;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox4;
-        private System.Windows.Forms.Button filtreBtn;
-        private System.Windows.Forms.Button passebasBtn;
-        private System.Windows.Forms.Button passehautBtn;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button errosionBtn;
     }
 }
 
